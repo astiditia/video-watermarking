@@ -1,111 +1,111 @@
-<!DOCTYPE html>
+
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Video Watermarking</title>
 <style>
-  :root{
-    --bg:#e8f4fd; --panel:#ffffff; --panel2:#f1f8fe; --line:#bfe0f5;
-    --text:#12324a; --muted:#5f7f99; --accent:#38bdf8;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif;line-height:1.5}
-  .wrap{max-width:1150px;margin:0 auto;padding:28px 18px 60px}
-  h1{margin:0;font-size:28px}
-  .sub{color:var(--muted);margin:4px 0 22px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media(max-width:860px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(56,189,248,.12)}
-  .card h2{margin:0 0 12px;font-size:15px;color:#0284c7;letter-spacing:.5px;text-transform:uppercase}
-  .card h2 span{display:inline-block;background:var(--accent);color:#04202a;border-radius:6px;padding:0 8px;margin-right:8px}
-  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
-  input[type=text],input[type=file]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 10px;border-radius:8px}
-  input[type=range]{width:100%}
-  input[type=color]{width:60px;height:34px;border:none;background:none;padding:0}
-  .row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-  .row label{margin:0}
-  .pos{display:grid;grid-template-columns:repeat(3,56px);gap:6px;margin:6px 0}
-  .pos button{height:40px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--muted);cursor:pointer}
-  .pos button.active{background:var(--accent);color:#04202a;border-color:var(--accent);font-weight:700}
-  .btn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--accent);color:#04202a;font-weight:700;font-size:16px;cursor:pointer}
-  .btn:disabled{opacity:.5;cursor:wait}
-  .files{font-size:13px;color:var(--muted);margin-top:8px}
-  .files div{padding:2px 0}
-  canvas#preview{width:100%;background:#000;border-radius:10px;display:block}
-  .bar{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;margin:8px 0}
-  .bar div{height:100%;width:0;background:var(--accent);transition:width .15s}
-  .result video{width:100%;border-radius:10px;background:#000}
-  .result a{display:inline-block;margin-top:8px;color:#04202a;background:var(--accent);padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600}
-  .note{font-size:12.5px;color:var(--muted)}
-  .hide{display:none}
+  :root{
+    --bg:#e8f4fd; --panel:#ffffff; --panel2:#f1f8fe; --line:#bfe0f5;
+    --text:#12324a; --muted:#5f7f99; --accent:#38bdf8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:1150px;margin:0 auto;padding:28px 18px 60px}
+  h1{margin:0;font-size:28px}
+  .sub{color:var(--muted);margin:4px 0 22px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(56,189,248,.12)}
+  .card h2{margin:0 0 12px;font-size:15px;color:#0284c7;letter-spacing:.5px;text-transform:uppercase}
+  .card h2 span{display:inline-block;background:var(--accent);color:#04202a;border-radius:6px;padding:0 8px;margin-right:8px}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input[type=text],input[type=file]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 10px;border-radius:8px}
+  input[type=range]{width:100%}
+  input[type=color]{width:60px;height:34px;border:none;background:none;padding:0}
+  .row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .row label{margin:0}
+  .pos{display:grid;grid-template-columns:repeat(3,56px);gap:6px;margin:6px 0}
+  .pos button{height:40px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--muted);cursor:pointer}
+  .pos button.active{background:var(--accent);color:#04202a;border-color:var(--accent);font-weight:700}
+  .btn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--accent);color:#04202a;font-weight:700;font-size:16px;cursor:pointer}
+  .btn:disabled{opacity:.5;cursor:wait}
+  .files{font-size:13px;color:var(--muted);margin-top:8px}
+  .files div{padding:2px 0}
+  canvas#preview{width:100%;background:#000;border-radius:10px;display:block}
+  .bar{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;margin:8px 0}
+  .bar div{height:100%;width:0;background:var(--accent);transition:width .15s}
+  .result video{width:100%;border-radius:10px;background:#000}
+  .result a{display:inline-block;margin-top:8px;color:#04202a;background:var(--accent);padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+  .note{font-size:12.5px;color:var(--muted)}
+  .hide{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🎬 Video Watermarking</h1>
+  <h1>🎬 Video Watermarking</h1>
 
-  <div class="grid">
-    <!-- KOLOM KIRI: PENGATURAN -->
-    <div>
-      <div class="card">
-        <h2><span>1</span>Upload video</h2>
-        <input type="file" id="videos" accept="video/*" multiple>
-        <div class="files" id="fileList">Belum ada video. Untuk pengujian pilih minimal 2 video.</div>
-      </div>
+  <div class="grid">
+    <!-- KOLOM KIRI: PENGATURAN -->
+    <div>
+      <div class="card">
+        <h2><span>1</span>Upload video</h2>
+        <input type="file" id="videos" accept="video/*" multiple>
+        <div class="files" id="fileList">Belum ada video. Untuk pengujian pilih minimal 2 video.</div>
+      </div>
 
-      <div class="card">
-        <h2><span>2</span>Teks / Logo</h2>
-        <div class="row">
-          <label><input type="radio" name="mode" value="text" checked> Teks</label>
-          <label><input type="radio" name="mode" value="logo"> Logo</label>
-        </div>
+      <div class="card">
+        <h2><span>2</span>Teks / Logo</h2>
+        <div class="row">
+          <label><input type="radio" name="mode" value="text" checked> Teks</label>
+          <label><input type="radio" name="mode" value="logo"> Logo</label>
+        </div>
 
-        <div id="textOpts">
-          <label>Teks watermark</label>
-          <input type="text" id="wmText" value="© Kelompok 05">
-          <label>Ukuran font: <b id="fsVal">6</b>% tinggi video</label>
-          <input type="range" id="fontSize" min="2" max="20" step="0.5" value="6">
-          <div class="row" style="margin-top:10px"><label>Warna</label><input type="color" id="wmColor" value="#ffffff"></div>
-        </div>
+        <div id="textOpts">
+          <label>Teks watermark</label>
+          <input type="text" id="wmText" value="©️ Kelompok 05">
+          <label>Ukuran font: <b id="fsVal">6</b>% tinggi video</label>
+          <input type="range" id="fontSize" min="2" max="20" step="0.5" value="6">
+          <div class="row" style="margin-top:10px"><label>Warna</label><input type="color" id="wmColor" value="#ffffff"></div>
+        </div>
 
-        <div id="logoOpts" class="hide">
-          <label>File logo (PNG transparan disarankan)</label>
-          <input type="file" id="logoFile" accept="image/*">
-          <label>Lebar logo: <b id="lsVal">15</b>% lebar video</label>
-          <input type="range" id="logoScale" min="5" max="50" value="15">
-        </div>
+        <div id="logoOpts" class="hide">
+          <label>File logo (PNG transparan disarankan)</label>
+          <input type="file" id="logoFile" accept="image/*">
+          <label>Lebar logo: <b id="lsVal">15</b>% lebar video</label>
+          <input type="range" id="logoScale" min="5" max="50" value="15">
+        </div>
 
-        <label>Opacity: <b id="opVal">0.6</b></label>
-        <input type="range" id="opacity" min="0.1" max="1" step="0.05" value="0.6">
-      </div>
+        <label>Opacity: <b id="opVal">0.6</b></label>
+        <input type="range" id="opacity" min="0.1" max="1" step="0.05" value="0.6">
+      </div>
 
-      <div class="card">
-        <h2><span>3</span>Posisi</h2>
-        <div class="pos" id="posGrid"></div>
-        <label>Margin: <b id="mgVal">20</b> px</label>
-        <input type="range" id="margin" min="0" max="100" value="20">
-      </div>
+      <div class="card">
+        <h2><span>3</span>Posisi</h2>
+        <div class="pos" id="posGrid"></div>
+        <label>Margin: <b id="mgVal">20</b> px</label>
+        <input type="range" id="margin" min="0" max="100" value="20">
+      </div>
 
-      <button class="btn" id="runBtn">🚀 Proses watermark</button>
-      <p class="note">Catatan: proses berjalan sebesar durasi video (real-time). Biarkan tab ini tetap terbuka dan aktif sampai selesai. Gunakan Chrome atau Edge.</p>
-    </div>
+      <button class="btn" id="runBtn">🚀 Proses watermark</button>
+      <p class="note">Catatan: proses berjalan sebesar durasi video (real-time). Biarkan tab ini tetap terbuka dan aktif sampai selesai. Gunakan Chrome atau Edge.</p>
+    </div>
 
-    <!-- KOLOM KANAN: PREVIEW + HASIL -->
-    <div>
-      <div class="card">
-        <h2>Preview watermark</h2>
-        <canvas id="preview" width="640" height="360"></canvas>
-      </div>
+    <!-- KOLOM KANAN: PREVIEW + HASIL -->
+    <div>
+      <div class="card">
+        <h2>Preview watermark</h2>
+        <canvas id="preview" width="640" height="360"></canvas>
+      </div>
 
-      <div class="card">
-        <h2><span>4</span>Hasil video</h2>
-        <div id="status" class="note">Hasil akan tampil di sini setelah diproses.</div>
-        <div class="bar hide" id="barWrap"><div id="bar"></div></div>
-        <div id="results"></div>
-      </div>
-    </div>
-  </div>
+      <div class="card">
+        <h2><span>4</span>Hasil video</h2>
+        <div id="status" class="note">Hasil akan tampil di sini setelah diproses.</div>
+        <div class="bar hide" id="barWrap"><div id="bar"></div></div>
+        <div id="results"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -113,232 +113,232 @@ const $ = id => document.getElementById(id);
 
 let files = [];
 let logoImg = null;
-let pos = { fx: 1, fy: 1 };          // default: kanan bawah
+let pos = { fx: 1, fy: 1 };          // default: kanan bawah
 let previewVid = null;
 
 /* ---------- posisi 3x3 ---------- */
-const POS_LABELS = ["↖","↑","↗","←","•","→","↙","↓","↘"];
+const POS_LABELS = ["↖️","↑","↗️","←","•","→","↙️","↓","↘️"];
 (function buildGrid(){
-  const g = $("posGrid");
-  POS_LABELS.forEach((t, i) => {
-    const b = document.createElement("button");
-    b.textContent = t;
-    const fx = (i % 3) / 2, fy = Math.floor(i / 3) / 2;
-    b.dataset.fx = fx; b.dataset.fy = fy;
-    if (fx === 1 && fy === 1) b.classList.add("active");
-    b.onclick = () => {
-      g.querySelectorAll("button").forEach(x => x.classList.remove("active"));
-      b.classList.add("active");
-      pos = { fx, fy };
-      renderPreview();
-    };
-    g.appendChild(b);
-  });
+  const g = $("posGrid");
+  POS_LABELS.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.textContent = t;
+    const fx = (i % 3) / 2, fy = Math.floor(i / 3) / 2;
+    b.dataset.fx = fx; b.dataset.fy = fy;
+    if (fx === 1 && fy === 1) b.classList.add("active");
+    b.onclick = () => {
+      g.querySelectorAll("button").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      pos = { fx, fy };
+      renderPreview();
+    };
+    g.appendChild(b);
+  });
 })();
 
 /* ---------- inti: gambar watermark pada 1 frame ---------- */
 function drawWatermark(ctx, W, H){
-  const mode = document.querySelector('input[name=mode]:checked').value;
-  const opacity = +$("opacity").value;
-  const margin = (+$("margin").value) * (H / 720);
-  let w, h;
+  const mode = document.querySelector('input[name=mode]:checked').value;
+  const opacity = +$("opacity").value;
+  const margin = (+$("margin").value) * (H / 720);
+  let w, h;
 
-  ctx.save();
-  ctx.globalAlpha = opacity;
+  ctx.save();
+  ctx.globalAlpha = opacity;
 
-  if (mode === "text"){
-    const text = $("wmText").value;
-    if (!text.trim()){ ctx.restore(); return; }
-    const size = (+$("fontSize").value / 100) * H;
-    ctx.font = `bold ${size}px Arial, sans-serif`;
-    ctx.textBaseline = "top";
-    w = ctx.measureText(text).width;
-    h = size * 1.2;
-    const x = margin + pos.fx * (W - w - 2 * margin);
-    const y = margin + pos.fy * (H - h - 2 * margin);
-    ctx.fillStyle = $("wmColor").value;
-    ctx.fillText(text, x, y);
-  } else {
-    if (!logoImg){ ctx.restore(); return; }
-    w = (+$("logoScale").value / 100) * W;
-    h = logoImg.height * w / logoImg.width;
-    const x = margin + pos.fx * (W - w - 2 * margin);
-    const y = margin + pos.fy * (H - h - 2 * margin);
-    ctx.drawImage(logoImg, x, y, w, h);
-  }
-  ctx.restore();
+  if (mode === "text"){
+    const text = $("wmText").value;
+    if (!text.trim()){ ctx.restore(); return; }
+    const size = (+$("fontSize").value / 100) * H;
+    ctx.font = `bold ${size}px Arial, sans-serif`;
+    ctx.textBaseline = "top";
+    w = ctx.measureText(text).width;
+    h = size * 1.2;
+    const x = margin + pos.fx * (W - w - 2 * margin);
+    const y = margin + pos.fy * (H - h - 2 * margin);
+    ctx.fillStyle = $("wmColor").value;
+    ctx.fillText(text, x, y);
+  } else {
+    if (!logoImg){ ctx.restore(); return; }
+    w = (+$("logoScale").value / 100) * W;
+    h = logoImg.height * w / logoImg.width;
+    const x = margin + pos.fx * (W - w - 2 * margin);
+    const y = margin + pos.fy * (H - h - 2 * margin);
+    ctx.drawImage(logoImg, x, y, w, h);
+  }
+  ctx.restore();
 }
 
 /* ---------- util ---------- */
 function loadVideo(file){
-  return new Promise((res, rej) => {
-    const v = document.createElement("video");
-    v.src = URL.createObjectURL(file);
-    v.preload = "auto";
-    v.playsInline = true;
-    v.onloadedmetadata = () => res(v);
-    v.onerror = () => rej(new Error("Video tidak dapat dibuka: " + file.name));
-  });
+  return new Promise((res, rej) => {
+    const v = document.createElement("video");
+    v.src = URL.createObjectURL(file);
+    v.preload = "auto";
+    v.playsInline = true;
+    v.onloadedmetadata = () => res(v);
+    v.onerror = () => rej(new Error("Video tidak dapat dibuka: " + file.name));
+  });
 }
 
 function pickMime(){
-  const list = [
-    "video/mp4;codecs=avc1,mp4a.40.2", "video/mp4",
-    "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"
-  ];
-  return list.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
+  const list = [
+    "video/mp4;codecs=avc1,mp4a.40.2", "video/mp4",
+    "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"
+  ];
+  return list.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
 }
 
 /* ---------- preview ---------- */
 async function setupPreview(){
-  if (!files.length){ previewVid = null; renderPreview(); return; }
-  try{
-    previewVid = await loadVideo(files[0]);
-    await new Promise(r => {
-      previewVid.onseeked = r;
-      previewVid.currentTime = Math.min(1, (previewVid.duration || 2) / 2);
-    });
-  }catch(e){ previewVid = null; }
-  renderPreview();
+  if (!files.length){ previewVid = null; renderPreview(); return; }
+  try{
+    previewVid = await loadVideo(files[0]);
+    await new Promise(r => {
+      previewVid.onseeked = r;
+      previewVid.currentTime = Math.min(1, (previewVid.duration || 2) / 2);
+    });
+  }catch(e){ previewVid = null; }
+  renderPreview();
 }
 
 function renderPreview(){
-  const c = $("preview"), ctx = c.getContext("2d");
-  if (!previewVid){
-    c.width = 640; c.height = 360;
-    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, 640, 360);
-    ctx.fillStyle = "#8fa3cc"; ctx.font = "18px Arial"; ctx.textAlign = "center";
-    ctx.fillText("Upload video untuk melihat preview", 320, 185);
-    ctx.textAlign = "start";
-    return;
-  }
-  c.width = previewVid.videoWidth; c.height = previewVid.videoHeight;
-  ctx.drawImage(previewVid, 0, 0, c.width, c.height);
-  drawWatermark(ctx, c.width, c.height);
+  const c = $("preview"), ctx = c.getContext("2d");
+  if (!previewVid){
+    c.width = 640; c.height = 360;
+    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, 640, 360);
+    ctx.fillStyle = "#8fa3cc"; ctx.font = "18px Arial"; ctx.textAlign = "center";
+    ctx.fillText("Upload video untuk melihat preview", 320, 185);
+    ctx.textAlign = "start";
+    return;
+  }
+  c.width = previewVid.videoWidth; c.height = previewVid.videoHeight;
+  ctx.drawImage(previewVid, 0, 0, c.width, c.height);
+  drawWatermark(ctx, c.width, c.height);
 }
 
 /* ---------- proses 1 video: frame demi frame ---------- */
 async function processVideo(file, onProgress){
-  const v = await loadVideo(file);
-  const W = v.videoWidth, H = v.videoHeight;
-  const canvas = document.createElement("canvas");
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext("2d");
-  const stream = canvas.captureStream(30);
+  const v = await loadVideo(file);
+  const W = v.videoWidth, H = v.videoHeight;
+  const canvas = document.createElement("canvas");
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext("2d");
+  const stream = canvas.captureStream(30);
 
-  // ambil audio asli (tanpa memutar suara ke speaker)
-  let actx = null;
-  try{
-    actx = new (window.AudioContext || window.webkitAudioContext)();
-    await actx.resume();
-    const src = actx.createMediaElementSource(v);
-    const dest = actx.createMediaStreamDestination();
-    src.connect(dest);
-    dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
-  }catch(e){ console.warn("Audio tidak dapat diambil:", e); }
+  // ambil audio asli (tanpa memutar suara ke speaker)
+  let actx = null;
+  try{
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    await actx.resume();
+    const src = actx.createMediaElementSource(v);
+    const dest = actx.createMediaStreamDestination();
+    src.connect(dest);
+    dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+  }catch(e){ console.warn("Audio tidak dapat diambil:", e); }
 
-  const mime = pickMime();
-  const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5000000 } : {});
-  const chunks = [];
-  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
-  const stopped = new Promise(res => rec.onstop = res);
+  const mime = pickMime();
+  const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5000000 } : {});
+  const chunks = [];
+  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  const stopped = new Promise(res => rec.onstop = res);
 
-  const render = () => {
-    ctx.drawImage(v, 0, 0, W, H);        // 1) ambil frame
-    drawWatermark(ctx, W, H);            // 2) tempel watermark
-    onProgress(v.duration ? v.currentTime / v.duration : 0);
-  };
+  const render = () => {
+    ctx.drawImage(v, 0, 0, W, H);        // 1) ambil frame
+    drawWatermark(ctx, W, H);            // 2) tempel watermark
+    onProgress(v.duration ? v.currentTime / v.duration : 0);
+  };
 
-  let running = true;
-  const loop = () => {
-    if (!running) return;
-    render();
-    if ("requestVideoFrameCallback" in v) v.requestVideoFrameCallback(loop);
-    else requestAnimationFrame(loop);
-  };
+  let running = true;
+  const loop = () => {
+    if (!running) return;
+    render();
+    if ("requestVideoFrameCallback" in v) v.requestVideoFrameCallback(loop);
+    else requestAnimationFrame(loop);
+  };
 
-  v.onended = () => { running = false; render(); setTimeout(() => rec.stop(), 300); };
+  v.onended = () => { running = false; render(); setTimeout(() => rec.stop(), 300); };
 
-  rec.start(500);
-  await v.play();
-  loop();
-  await stopped;                         // 3) frame tersimpan ke video baru
-  if (actx) actx.close();
+  rec.start(500);
+  await v.play();
+  loop();
+  await stopped;                         // 3) frame tersimpan ke video baru
+  if (actx) actx.close();
 
-  const type = rec.mimeType || "video/webm";
-  const blob = new Blob(chunks, { type });
-  return { blob, url: URL.createObjectURL(blob), ext: type.includes("mp4") ? "mp4" : "webm" };
+  const type = rec.mimeType || "video/webm";
+  const blob = new Blob(chunks, { type });
+  return { blob, url: URL.createObjectURL(blob), ext: type.includes("mp4") ? "mp4" : "webm" };
 }
 
 /* ---------- event UI ---------- */
 $("videos").onchange = e => {
-  files = [...e.target.files];
-  $("fileList").innerHTML = files.length
-    ? files.map((f, i) => `<div>${i + 1}. ${f.name} (${(f.size / 1048576).toFixed(1)} MB)</div>`).join("")
-        + (files.length < 2 ? `<div style="color:#d97706">⚠ Pengujian disarankan minimal 2 video</div>` : "")
-    : "Belum ada video.";
-  setupPreview();
+  files = [...e.target.files];
+  $("fileList").innerHTML = files.length
+    ? files.map((f, i) => `<div>${i + 1}. ${f.name} (${(f.size / 1048576).toFixed(1)} MB)</div>`).join("")
+        + (files.length < 2 ? `<div style="color:#d97706">⚠ Pengujian disarankan minimal 2 video</div>` : "")
+    : "Belum ada video.";
+  setupPreview();
 };
 
 document.querySelectorAll("input[name=mode]").forEach(r => r.onchange = () => {
-  const text = document.querySelector("input[name=mode]:checked").value === "text";
-  $("textOpts").classList.toggle("hide", !text);
-  $("logoOpts").classList.toggle("hide", text);
-  renderPreview();
+  const text = document.querySelector("input[name=mode]:checked").value === "text";
+  $("textOpts").classList.toggle("hide", !text);
+  $("logoOpts").classList.toggle("hide", text);
+  renderPreview();
 });
 
 $("logoFile").onchange = e => {
-  const f = e.target.files[0];
-  if (!f) return;
-  const img = new Image();
-  img.onload = () => { logoImg = img; renderPreview(); };
-  img.src = URL.createObjectURL(f);
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  img.onload = () => { logoImg = img; renderPreview(); };
+  img.src = URL.createObjectURL(f);
 };
 
 [["fontSize","fsVal"],["logoScale","lsVal"],["opacity","opVal"],["margin","mgVal"]].forEach(([i, o]) => {
-  $(i).oninput = () => { $(o).textContent = $(i).value; renderPreview(); };
+  $(i).oninput = () => { $(o).textContent = $(i).value; renderPreview(); };
 });
 ["wmText","wmColor"].forEach(i => $(i).oninput = renderPreview);
 
 $("runBtn").onclick = async () => {
-  const mode = document.querySelector("input[name=mode]:checked").value;
-  if (!files.length) return alert("Upload minimal 1 video dulu.");
-  if (mode === "logo" && !logoImg) return alert("Upload file logo dulu.");
-  if (mode === "text" && !$("wmText").value.trim()) return alert("Teks watermark tidak boleh kosong.");
-  if (!window.MediaRecorder) return alert("Browser tidak mendukung MediaRecorder. Gunakan Chrome atau Edge.");
+  const mode = document.querySelector("input[name=mode]:checked").value;
+  if (!files.length) return alert("Upload minimal 1 video dulu.");
+  if (mode === "logo" && !logoImg) return alert("Upload file logo dulu.");
+  if (mode === "text" && !$("wmText").value.trim()) return alert("Teks watermark tidak boleh kosong.");
+  if (!window.MediaRecorder) return alert("Browser tidak mendukung MediaRecorder. Gunakan Chrome atau Edge.");
 
-  $("runBtn").disabled = true;
-  $("results").innerHTML = "";
-  $("barWrap").classList.remove("hide");
+  $("runBtn").disabled = true;
+  $("results").innerHTML = "";
+  $("barWrap").classList.remove("hide");
 
-  for (let i = 0; i < files.length; i++){
-    const f = files[i];
-    try{
-      $("status").textContent = `Memproses (${i + 1}/${files.length}): ${f.name}`;
-      $("bar").style.width = "0%";
-      const out = await processVideo(f, p => $("bar").style.width = (p * 100).toFixed(0) + "%");
+  for (let i = 0; i < files.length; i++){
+    const f = files[i];
+    try{
+      $("status").textContent = `Memproses (${i + 1}/${files.length}): ${f.name}`;
+      $("bar").style.width = "0%";
+      const out = await processVideo(f, p => $("bar").style.width = (p * 100).toFixed(0) + "%");
 
-      const name = f.name.replace(/\.[^.]+$/, "");
-      const div = document.createElement("div");
-      div.className = "result";
-      div.style.marginTop = "14px";
-      div.innerHTML = `<b>${f.name}</b><video controls src="${out.url}"></video>
-        <a href="${out.url}" download="watermarked_${name}.${out.ext}">⬇ Download hasil (.${out.ext})</a>`;
-      $("results").appendChild(div);
-    }catch(err){
-      const d = document.createElement("div");
-      d.style.color = "#dc2626";
-      d.textContent = "Gagal: " + err.message;
-      $("results").appendChild(d);
-    }
-  }
+      const name = f.name.replace(/\.[^.]+$/, "");
+      const div = document.createElement("div");
+      div.className = "result";
+      div.style.marginTop = "14px";
+      div.innerHTML = `<b>${f.name}</b><video controls src="${out.url}"></video>
+        <a href="${out.url}" download="watermarked_${name}.${out.ext}">⬇ Download hasil (.${out.ext})</a>`;
+      $("results").appendChild(div);
+    }catch(err){
+      const d = document.createElement("div");
+      d.style.color = "#dc2626";
+      d.textContent = "Gagal: " + err.message;
+      $("results").appendChild(d);
+    }
+  }
 
-  $("status").textContent = "✅ Selesai. Semua video sudah diberi watermark.";
-  $("barWrap").classList.add("hide");
-  $("runBtn").disabled = false;
+  $("status").textContent = "✅ Selesai. Semua video sudah diberi watermark.";
+  $("barWrap").classList.add("hide");
+  $("runBtn").disabled = false;
 };
 
 renderPreview();
 </script>
 </body>
-</html> mana link nya
+</html>
